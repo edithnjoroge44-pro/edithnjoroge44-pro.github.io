@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Evaluation Lab — Learn to Grade Model Outputs</title>
+<style>
+  :root{--navy:#143d5c;--navy2:#1c5a80;--accent:#1fa06b;--red:#d9534f;--ink:#1a1a1a;--muted:#5c6b78;
+    --bg:#eef2f6;--card:#fff;--line:#dde5ee}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:34px 0}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  header h1{font-size:1.8rem}
+  header p{color:#cfe3f2;max-width:720px;margin-top:6px}
+  main{padding:34px 0}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;
+    box-shadow:0 2px 10px rgba(20,61,92,.05)}
+  .card h2{color:var(--navy);font-size:1.15rem;margin-bottom:10px}
+  .crit{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .crit:last-child{border-bottom:none}
+  .crit span{flex:1}
+  .p{display:inline-block;padding:4px 10px;border-radius:6px;font-weight:700;cursor:pointer;border:1px solid var(--line)}
+  .p.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .score{font-size:2rem;font-weight:800;color:var(--navy2);margin-top:12px}
+  pre{background:#0f2233;color:#e6f0f8;border-radius:8px;padding:12px;font-size:.85rem}
+  .btn{background:var(--navy2);color:#fff;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:10px}
+  .btn:hover{background:var(--navy)}
+  .verdict{font-weight:800;margin-top:6px}
+  .pass{color:var(--accent)} .fail{color:var(--red)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>AI Evaluation Lab — Learn to Grade Model Outputs</h1>
+    <p>Try the skill behind AI data &amp; evaluation work: judge an AI answer against a rubric and compute a score.
+      This mirrors the method in my <code>ai-eval-rubrics</code> repo. <strong>Built by Edith Njoroge</strong>.</p>
+  </div>
+</header>
+<main class="wrap">
+  <div class="grid">
+    <div class="card">
+      <h2>1. The task &amp; answer to grade</h2>
+      <p style="color:var(--muted)">A retail store's revenue fell in June. An AI gave this answer:</p>
+      <pre>Revenue fell in June because the store ran out
+of stock of the best-selling item. Moving
+forward, the store should order more inventory.</pre>
+      <p style="margin-top:10px;color:var(--muted);font-size:.85rem">Grade it on each criterion (tap PASS/FAIL).</p>
+      <div id="crits"></div>
+      <div class="score" id="score">Score: 0%</div>
+      <div class="verdict" id="verdict"></div>
+      <button class="btn" onclick="reset()">Reset</button>
+    </div>
+    <div class="card">
+      <h2>2. The rubric &amp; why</h2>
+      <p>Evaluation is <b>atomic &amp; binary</b> so it's reproducible. Six criteria, weighted:</p>
+      <ul style="margin:10px 0 0 20px;font-size:.9rem">
+        <li><b>Correctness (30)</b> — is the conclusion right?</li>
+        <li><b>Completeness (15)</b> — all parts answered?</li>
+        <li><b>Reasoning (20)</b> — is each claim supported by a step?</li>
+        <li><b>Source citation (15)</b> — tied to a data source?</li>
+        <li><b>Risk &amp; edge cases (10)</b> — uncertainty noted?</li>
+        <li><b>Clarity (10)</b> — readable &amp; structured?</li>
+      </ul>
+      <p style="margin-top:12px;color:var(--muted);font-size:.85rem">This answer asserts a cause with no evidence,
+        so Correctness, Reasoning, and Citation fail. Note a <b>correctness fail</b> is mandatory — an incorrect answer
+        fails regardless of how tidy it is. That's the same rubric design used by real AI evaluation teams.
+      </p>
+    </div>
+  </div>
+</main>
+<script>
+const crits=[
+ {k:"Correctness",w:30},
+ {k:"Completeness",w:15},
+ {k:"Reasoning",w:20},
+ {k:"Citation",w:15},
+ {k:"Risk",w:10},
+ {k:"Clarity",w:10},
+];
+const state={};
+function render(){
+  const el=document.getElementById("crits");
+  el.innerHTML="";
+  crits.forEach(c=>{
+    const row=document.createElement("div");row.className="crit";
+    row.innerHTML='<span>'+c.k+' <b>('+c.w+')</b></span>';
+    ["PASS","FAIL"].forEach(v=>{
+      const b=document.createElement("span");b.className="p";b.textContent=v;
+      b.onclick=()=>{state[c.k]=(v==="PASS");
+        row.querySelectorAll(".p").forEach(o=>o.classList.remove("on"));b.classList.add("on");recalc()};
+      row.appendChild(b);
+    });
+    el.appendChild(row);
+  });
+}
+function recalc(){
+  let pts=0;crits.forEach(c=>{if(state[c.k])pts+=c.w});
+  const pct=Math.round(pts/100*100);
+  const s=document.getElementById("score");s.textContent="Score: "+pct+"%";
+  const v=document.getElementById("verdict");
+  v.textContent=pct>=60?"VERDICT: PASS":"VERDICT: FAIL";
+  v.className="verdict "+(pct>=60?"pass":"fail");
+}
+function reset(){Object.keys(state).forEach(k=>delete state[k]);render();recalc();}
+render();
+</script>
+</body>
+</html>

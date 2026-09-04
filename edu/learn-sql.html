@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn SQL — Interactive Data Lab</title>
+<style>
+  :root{--navy:#143d5c;--navy2:#1c5a80;--accent:#1fa06b;--ink:#1a1a1a;--muted:#5c6b78;
+    --bg:#eef2f6;--card:#fff;--line:#dde5ee}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:34px 0}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  header h1{font-size:1.8rem}
+  header p{color:#cfe3f2;max-width:720px;margin-top:6px}
+  main{padding:34px 0}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;
+    box-shadow:0 2px 10px rgba(20,61,92,.05)}
+  .card h2{color:var(--navy);font-size:1.15rem;margin-bottom:10px}
+  pre{background:#0f2233;color:#e6f0f8;border-radius:8px;padding:12px;overflow-x:auto;font-size:.85rem}
+  code{font-family:"SFMono-Regular",Consolas,Menlo,monospace}
+  table{border-collapse:collapse;width:100%;margin-top:10px;font-size:.85rem}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+  th{background:var(--navy);color:#fff}
+  textarea{width:100%;min-height:90px;font-family:Consolas,monospace;font-size:.85rem;padding:10px;
+    border:1px solid var(--line);border-radius:8px}
+  .btn{background:var(--navy2);color:#fff;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;
+    font-weight:600;margin-top:10px}
+  .btn:hover{background:var(--navy)}
+  .out{background:#f4f8fb;border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:12px;
+    font-family:monospace;font-size:.85rem;white-space:pre-wrap}
+  .qlabel{font-weight:700;color:var(--navy2);margin-top:14px}
+  .opt{display:block;margin:6px 0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:#fff}
+  .opt.correct{border-color:var(--accent);background:#e9f7f0}
+  .opt.wrong{border-color:#d9534f;background:#fdeeed}
+  .tag{display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:2px 8px;font-size:.72rem;margin-left:6px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Learn SQL — Interactive Data Lab</h1>
+    <p>An interactive, hands-on intro to the SQL that powers data engineering and analytics. No install needed
+      — read the concept, try the query, check your answer. <strong>Built by Edith Njoroge</strong>, Data Engineer.</p>
+  </div>
+</header>
+<main class="wrap">
+  <div class="grid">
+
+    <div class="card">
+      <h2>1. What SQL does</h2>
+      <p>SQL reads and transforms tabular data. Three queries cover most work:</p>
+      <ul style="margin:10px 0 0 20px">
+        <li><b>SELECT</b> — pick columns</li>
+        <li><b>WHERE</b> — filter rows</li>
+        <li><b>GROUP BY</b> — aggregate/summarize</li>
+      </ul>
+      <pre><code>SELECT region, SUM(revenue) AS total
+FROM sales
+WHERE year = 2024
+GROUP BY region
+ORDER BY total DESC;</code></pre>
+      <p style="margin-top:10px;color:var(--muted);font-size:.85rem">Sample <code>sales</code> table:</p>
+      <table>
+        <tr><th>region</th><th>revenue</th><th>year</th></tr>
+        <tr><td>Nairobi</td><td>100</td><td>2024</td></tr>
+        <tr><td>Mombasa</td><td>80</td><td>2024</td></tr>
+        <tr><td>Kisumu</td><td>60</td><td>2024</td></tr>
+        <tr><td>Nairobi</td><td>40</td><td>2023</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>2. Try it — run a query</h2>
+      <p>Edit the query below and press <b>Run</b>. The mini-engine returns the result of the
+        <code>sales</code> table above for SELECT/WHERE/GROUP BY/sum-revenue queries.</p>
+      <textarea id="q">SELECT region, SUM(revenue)
+FROM sales
+WHERE year = 2024
+GROUP BY region</textarea>
+      <button class="btn" onclick="run()">Run query</button>
+      <div class="out" id="out">Result appears here…</div>
+      <label class="qlabel">3. Quick check</label>
+      <div id="quiz"></div>
+    </div>
+  </div>
+</main>
+<script>
+const data=[
+  {region:"Nairobi",revenue:100,year:"2024"},
+  {region:"Mombasa",revenue:80,year:"2024"},
+  {region:"Kisumu",revenue:60,year:"2024"},
+  {region:"Nairobi",revenue:40,year:"2023"},
+];
+function toTable(rows){
+  if(!rows.length)return"(no rows)";
+  const keys=Object.keys(rows[0]);
+  let h="<table><tr>"+keys.map(k=>"<th>"+k+"</th>").join("")+"</tr>";
+  rows.forEach(r=>{h+="<tr>"+keys.map(k=>"<td>"+(r[k]===undefined?"":r[k])+"</td>").join("")+"</tr>"});
+  return h+"</table>";
+}
+function run(){
+  const q=(document.getElementById("q").value||"").toLowerCase();
+  let rows;
+  try{
+    rows=data.slice();
+    // WHERE
+    const m=q.match(/where\s+(\w+)\s*=\s*['"]?([\w-]+)['"]?/);
+    if(m) rows=rows.filter(r=>String(r[m[1]])===m[2]);
+    // GROUP BY region with SUM
+    const hasGroup=q.includes("group by");
+    let summarized=rows;
+    if(hasGroup){
+      const key=rows.length&&Object.keys(rows[0])[0];
+      const vals=q.match(/group\s+by\s+(\w+)/);
+      const gk=vals?vals[1]:key;
+      const map={};
+      rows.forEach(r=>{map[r[gk]]=(map[r[gk]]||0)+ (r.revenue||0)});
+      summarized=Object.keys(map).map(k=>({[gk]:k,total:map[k]}));
+    }
+    // plain SELECT
+    const selOk=q.includes("select");
+    document.getElementById("out").innerHTML=selOk?toTable(summarized):"(no valid SELECT — try starting with SELECT)";
+  }catch(e){document.getElementById("out").textContent="Syntax not recognised: "+e.message;}
+}
+// quiz
+const qData=[{q:"Which query returns the biggest region by revenue?",a:["SELECT region, MAX(revenue)...","ORDER BY total DESC on grouped revenue","GROUP BY year"],c:1}];
+function renderQuiz(){
+  const el=document.getElementById("quiz");
+  const d=qData[0];
+  el.innerHTML="<p>"+d.q+"</p>";
+  d.a.forEach((opt,i)=>{
+    const b=document.createElement("button");
+    b.className="opt";b.textContent=opt;
+    b.onclick=()=>{const opts=el.querySelectorAll(".opt");opts.forEach(o=>{o.classList.remove("correct","wrong")});
+      if(i===d.c){b.classList.add("correct")}else{b.classList.add("wrong")}};
+    el.appendChild(b);
+  });
+}
+renderQuiz();
+</script>
+</body>
+</html>

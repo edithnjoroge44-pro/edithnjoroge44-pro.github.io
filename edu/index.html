@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edith Njoroge — Interactive Learning Labs</title>
+<style>
+  :root{--navy:#143d5c;--navy2:#1c5a80;--accent:#1fa06b;--ink:#1a1a1a;--muted:#5c6b78;
+    --bg:#eef2f6;--card:#fff;--line:#dde5ee}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:40px 0}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  header h1{font-size:1.9rem}
+  header p{color:#cfe3f2;max-width:680px;margin-top:8px}
+  main{padding:34px 0}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px;
+    box-shadow:0 2px 10px rgba(20,61,92,.05);display:flex;flex-direction:column;text-decoration:none;color:var(--ink)}
+  .card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .card .num{color:var(--accent);font-weight:800;letter-spacing:1px;font-size:.75rem;text-transform:uppercase}
+  .card h2{color:var(--navy);font-size:1.3rem;margin:10px 0 8px}
+  .card p{color:var(--muted);flex:1;font-size:.95rem}
+  .card .go{color:var(--navy2);font-weight:700;margin-top:14px}
+  .back{margin-bottom:20px}
+  .back a{color:var(--navy2);text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Interactive Learning Labs</h1>
+    <p>A set of self-contained, hands-on educational demos I built to teach core data concepts — each runs
+      entirely in the browser (no installs). <strong>Built by Edith Njoroge</strong>, Data Engineer.</p>
+  </div>
+</header>
+<main class="wrap">
+  <p class="back"><a href="../index.html">← Back to portfolio</a></p>
+  <div class="cards">
+    <a class="card" href="learn-sql.html">
+      <span class="num">Lab 01</span>
+      <h2>Learn SQL</h2>
+      <p>Run real SELECT / WHERE / GROUP BY queries against a sample table and check your understanding with a quiz.</p>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="star-schema-lab.html">
+      <span class="num">Lab 02</span>
+      <h2>Star Schema Lab</h2>
+      <p>Classify fact vs. dimension tables and build a schema the way real data warehouses model sales.</p>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="ai-eval-lab.html">
+      <span class="num">Lab 03</span>
+      <h2>AI Evaluation Lab</h2>
+      <p>Judge an AI answer against a rubric and compute a weighted score — the core skill behind AI data &amp; eval work.</p>
+      <span class="go">Open →</span>
+    </a>
+  </div>
+</main>
+</body>
+</html>

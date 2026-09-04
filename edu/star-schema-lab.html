@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Star Schema Lab — Interactive Data Modeling</title>
+<style>
+  :root{--navy:#143d5c;--navy2:#1c5a80;--accent:#1fa06b;--ink:#1a1a1a;--muted:#5c6b78;
+    --bg:#eef2f6;--card:#fff;--line:#dde5ee}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:34px 0}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  header h1{font-size:1.8rem}
+  header p{color:#cfe3f2;max-width:720px;margin-top:6px}
+  main{padding:34px 0}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;
+    box-shadow:0 2px 10px rgba(20,61,92,.05)}
+  .card h2{color:var(--navy);font-size:1.15rem;margin-bottom:10px}
+  .dim{background:#eaf3f9;border:1px solid #cfe2f0;border-radius:8px;padding:10px 12px;margin:6px 0}
+  .dim b{color:var(--navy2)}
+  .fact{background:#e9f7f0;border:1px solid #bde6cf;border-radius:8px;padding:10px 12px;margin:6px 0}
+  .fact b{color:var(--accent)}
+  .hl{background:var(--accent);color:#fff;font-weight:700;border-radius:6px;padding:2px 6px}
+  pre{background:#0f2233;color:#e6f0f8;border-radius:8px;padding:12px;overflow-x:auto;font-size:.85rem}
+  .btn{background:var(--navy2);color:#fff;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:600}
+  .btn:hover{background:var(--navy)}
+  .qlabel{font-weight:700;color:var(--navy2);margin-top:14px}
+  .opt{display:block;margin:6px 0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:#fff;width:100%;text-align:left}
+  .opt.correct{border-color:var(--accent);background:#e9f7f0}
+  .opt.wrong{border-color:#d9534f;background:#fdeeed}
+  .out{background:#f4f8fb;border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:12px;font-family:monospace;font-size:.85rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Star Schema Lab — Interactive Data Modeling</h1>
+    <p>Learn how to turn messy orders into a query-friendly <b>star schema</b>. Pick the right table types to
+      build a schema, then see why it makes BI queries fast. <strong>Built by Edith Njoroge</strong>, Data Engineer.</p>
+  </div>
+</header>
+<main class="wrap">
+  <div class="grid">
+
+    <div class="card">
+      <h2>1. What a star schema is</h2>
+      <p>A <b>fact</b> table records events (one row per order); <b>dimension</b> tables describe the
+        who/what/when. Real star schemas keep facts narrow &amp; additive so BI tools query fast:</p>
+      <div class="fact"><b>fct_orders</b> — the fact: order_id, date, customer_id, product_id, total</div>
+      <div class="dim"><b>dim_customer</b> — customer_id, name, region</div>
+      <div class="dim"><b>dim_product</b> — product_id, name, category</div>
+      <div class="dim"><b>dim_date</b> — date, year, month, quarter</div>
+      <p style="margin-top:10px;color:var(--muted);font-size:.85rem">A fact <b>references</b> dimensions by key —
+        that's the "star" shape. This is the model my <code>retail-analytics-dashboard</code> project uses.</p>
+    </div>
+
+    <div class="card">
+      <h2>2. Build it — classify each table</h2>
+      <p>Click whether each is a <b>Fact</b> or a <b>Dimension</b>.</p>
+      <span class="qlabel">1. <code>sales_events</code> (one row per sale, with quantities &amp; totals)</span>
+      <div id="a1" style="display:flex;gap:8px;margin-top:6px">
+        <button class="opt" onclick="pick('a1',1,this)">Fact</button>
+        <button class="opt" onclick="pick('a1',0,this)">Dimension</button>
+      </div>
+      <span class="qlabel">2. <code>customers</code> (name, city, segment, signup date)</span>
+      <div id="a2" style="display:flex;gap:8px;margin-top:6px">
+        <button class="opt" onclick="pick('a2',0,this)">Fact</button>
+        <button class="opt" onclick="pick('a2',1,this)">Dimension</button>
+      </div>
+      <div class="out" id="score">Score: 0 / 2</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h2>3. Why it matters — the KPI query</h2>
+    <p>Once the schema is right, business KPIs are a short, fast query:</p>
+    <pre><code>SELECT d.month,
+       SUM(f.total)          AS revenue,
+       COUNT(*)              AS order_lines
+FROM fct_orders f
+JOIN dim_date     d ON f.order_date_id = d.date_id
+GROUP BY d.month;</code></pre>
+    <p style="margin-top:10px;color:var(--muted);font-size:.85rem">The fact table carries the numbers; dimensions
+      carry the labels — so adding "by region" or "by category" is a one-line JOIN, not a rewrite.</p>
+  </div>
+</main>
+<script>
+function pick(id,expect,btn){
+  const box=document.getElementById(id);
+  box.querySelectorAll(".opt").forEach(o=>o.classList.remove("correct","wrong"));
+  btn.classList.add(expect===1?"correct":"wrong");
+  let score=0;
+  ["a1","a2"].forEach(k=>{const els=document.querySelectorAll("#"+k+" .opt.correct");if(els.length)score++});
+  document.getElementById("score").textContent="Score: "+score+" / 2";
+}
+</script>
+</body>
+</html>
