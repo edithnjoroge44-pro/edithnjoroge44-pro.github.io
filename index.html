@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Edith Njoroge — Software Engineer & AI Domain Expert · Backend, Data & ML Platforms</title>
+<meta name="description" content="Edith Njoroge — Software Engineer & AI Domain Expert. Backend, data & ML platforms. Public proof-of-work: 11 runnable repos, 18+ passing tests, technical writing, and interactive labs.">
+<meta property="og:title" content="Edith Njoroge — Software Engineer & AI Domain Expert">
+<meta property="og:description" content="Backend, data & ML platforms. 11 runnable public repos, 18+ passing tests, technical writing and interactive learning labs. Nairobi, Kenya — remote worldwide.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edithnjoroge44-pro.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231e3a8a'/%3E%3Cstop offset='1' stop-color='%230d9488'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ctext x='50' y='66' font-family='Arial' font-size='46' font-weight='700' fill='white' text-anchor='middle'%3EEN%3C/text%3E%3C/svg%3E">
 <style>
   :root{
     --navy:#1e3a8a; --navy2:#4f46e5; --accent:#0d9488; --ink:#111827;
@@ -27,6 +33,12 @@
   h2{font-size:1.35rem;color:var(--navy);margin-bottom:8px;border-bottom:3px solid var(--accent);
     padding-bottom:8px;display:inline-block}
   .lead{color:var(--muted);margin-bottom:26px;max-width:760px}
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:26px 0 30px}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;text-align:center;
+    box-shadow:0 2px 10px rgba(20,61,92,.05)}
+  .metric .n{font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,var(--navy),var(--accent));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .metric .l{font-size:.82rem;color:var(--muted);margin-top:4px}
   .grid-tracks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
   @media(max-width:760px){.grid-tracks{grid-template-columns:1fr}}
   .track{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;
@@ -42,7 +54,9 @@
   .card .num{font-size:.75rem;color:var(--accent);font-weight:700;letter-spacing:1px;text-transform:uppercase}
   .card h3{font-size:1rem;color:var(--navy);margin:6px 0 6px}
   .card p{font-size:.88rem;color:var(--muted);flex:1}
-  .card .links{margin-top:14px;font-size:.85rem}
+  .card .res{font-size:.85rem;color:var(--ink);background:#f0f7fa;border-radius:8px;padding:10px 12px;margin-top:10px}
+  .card .res b{color:var(--navy)}
+  .card .links{margin-top:14px;font-size:.85rem;display:flex;gap:12px;flex-wrap:wrap}
   .skills{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:8px}
   @media(max-width:760px){.skills{grid-template-columns:1fr}}
   .skill{border-left:4px solid var(--accent);background:var(--card);border-radius:0 10px 10px 0;
@@ -52,9 +66,20 @@
   .certs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
   .cert{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;
     font-size:.85rem}
+  .cta{background:linear-gradient(135deg,#1e3a8a 0%,#4f46e5 55%,#0d9488 100%);color:#fff;border-radius:16px;
+    padding:40px;text-align:center}
+  .cta h2{color:#fff;border-bottom:none;font-size:1.5rem}
+  .cta p{color:#dbe9f5;max-width:640px;margin:10px auto 22px}
+  .cta .buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .cta a.btn{background:#fff;color:var(--navy);font-weight:700;padding:12px 24px;border-radius:10px;font-size:.95rem}
+  .cta a.btn:hover{text-decoration:none;background:#eef4fb}
+  .cta a.ghost{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;font-weight:600;
+    padding:12px 24px;border-radius:10px;font-size:.95rem}
+  .cta a.ghost:hover{text-decoration:none;background:rgba(255,255,255,.22)}
   footer{background:var(--navy);color:#cfe3f2;padding:28px 0;text-align:center;font-size:.85rem}
   footer a{color:#e6f0f8}
   .note{font-size:.78rem;color:var(--muted);margin-top:20px}
+  .scope{font-size:.82rem;color:var(--muted);margin-top:10px}
 </style>
 </head>
 <body>
@@ -75,7 +100,8 @@
       <span class="badge">ML &amp; Data Science</span>
       <span class="badge">AI Evaluation &amp; Rubrics</span>
       <span class="badge"><a href="advanced.html" style="color:#e6f0f8;text-decoration:underline">Advanced Projects →</a></span>
-      <span class="badge"><a href="edu/index.html" style="color:#e6f0f8;text-decoration:underline">Interactive Learning Labs →</a></span>
+      <span class="badge"><a href="edu/index.html" style="color:#e6f0f8;text-decoration:underline">Interactive Labs →</a></span>
+      <span class="badge"><a href="blog/index.html" style="color:#e6f0f8;text-decoration:underline">Writing &amp; Evaluation →</a></span>
     </div>
   </div>
 </header>
@@ -91,6 +117,14 @@
       <em>correct</em> and <em>excellent</em> look like for AI — authoring reference solutions, grading generated
       code and analyses, building evaluation rubrics and error taxonomies, and writing reasoning traces for
       frontier-model training and evaluation.</p>
+
+    <div class="metrics">
+      <div class="metric"><div class="n">11</div><div class="l">public proof-of-work repos</div></div>
+      <div class="metric"><div class="n">18+</div><div class="l">passing automated tests</div></div>
+      <div class="metric"><div class="n">5</div><div class="l">specialist tracks</div></div>
+      <div class="metric"><div class="n">3</div><div class="l">interactive learning labs</div></div>
+      <div class="metric"><div class="n">5</div><div class="l">original technical articles</div></div>
+    </div>
 
     <h2>Complementary tracks</h2>
     <div class="cards">
@@ -124,6 +158,36 @@
         <p>Dimensional modeling and dashboards that turn data into clear, decision-grade insight.</p>
         <span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Tableau</span>
         <span class="chip">Looker</span><span class="chip">KPI design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 style="color:#4f46e5">Software Engineering Showcase</h2>
+    <p class="lead">Hands-on application development — a production REST service, a concurrency-safe rate limiter &amp; cache, and a real CLI tool. Each is tested and CI-gated.</p>
+    <div class="cards">
+      <div class="card" style="border-top:4px solid #4f46e5">
+        <div class="num">REST API Service</div>
+        <h3>sw-rest-api</h3>
+        <p>Flask + SQLite REST service with validation, structured errors, Docker, and a CI workflow.</p>
+        <div class="res"><b>Why it matters:</b> a real HTTP service with the right status codes for every input, not just the happy path. 6 tests.</div>
+        <div class="links"><a href="https://github.com/edithnjoroge44-pro/sw-rest-api">View repo →</a></div>
+      </div>
+      <div class="card" style="border-top:4px solid #0d9488">
+        <div class="num">Concurrency &amp; Systems</div>
+        <h3>rate-limiter-cache</h3>
+        <p>Thread-safe sliding-window rate limiter + O(1) LRU cache with correct eviction.</p>
+        <div class="res"><b>Why it matters:</b> the failure mode most demos skip — concurrency and memory hygiene. 6 tests incl. a concurrency smoke test.</div>
+        <div class="links"><a href="https://github.com/edithnjoroge44-pro/rate-limiter-cache">View repo →</a></div>
+      </div>
+      <div class="card" style="border-top:4px solid #f59e0b">
+        <div class="num">CLI Application</div>
+        <h3>cli-data-tool</h3>
+        <p>argparse CLI to summarize, validate and query delimited files — clean CLI/domain separation, exit codes.</p>
+        <div class="res"><b>Why it matters:</b> built to an interface standard a team can actually use and automate. 6 tests.</div>
+        <div class="links"><a href="https://github.com/edithnjoroge44-pro/cli-data-tool">View repo →</a></div>
       </div>
     </div>
   </div>
@@ -172,27 +236,46 @@
 
 <section>
   <div class="wrap">
-    <h2 style="color:#4f46e5">Software Engineering Showcase</h2>
-    <p class="lead">Hands-on application development — a production REST service, a concurrency-safe rate limiter &amp; cache, and a real CLI tool. Each is tested and CI-gated.</p>
+    <h2 style="color:#7c3aed">Advanced Projects</h2>
+    <p class="lead">Harder, production-grade builds — RAG &amp; evaluation, real-time streaming, automated data quality, and MLOps/CI-CD. <a href="advanced.html" style="color:#7c3aed;font-weight:700">Explore the showcase →</a></p>
     <div class="cards">
-      <div class="card" style="border-top:4px solid #4f46e5">
-        <div class="num">REST API Service</div>
-        <h3>sw-rest-api</h3>
-        <p>Flask + SQLite REST service with validation, structured error handling, Docker, and GitHub Actions CI. 6 tests.</p>
-        <div class="links"><a href="https://github.com/edithnjoroge44-pro/sw-rest-api">View repo →</a></div>
+      <div class="card">
+        <div class="num">AI / Retrieval</div>
+        <h3>rag-llm-eval</h3>
+        <p>RAG pipeline built from scratch with an evaluation harness (Recall@k, Hit-Rate@k, MRR).</p>
+        <div class="links"><a href="https://github.com/edithnjoroge44-pro/rag-llm-eval">View repo →</a></div>
       </div>
-      <div class="card" style="border-top:4px solid #0d9488">
-        <div class="num">Concurrency &amp; Systems</div>
-        <h3>rate-limiter-cache</h3>
-        <p>Thread-safe sliding-window rate limiter + O(1) LRU cache with correct eviction. 6 tests incl. concurrency.</p>
-        <div class="links"><a href="https://github.com/edithnjoroge44-pro/rate-limiter-cache">View repo →</a></div>
+      <div class="card">
+        <div class="num">Streaming</div>
+        <h3>realtime-data-pipeline</h3>
+        <p>Event-driven streaming with sliding-window aggregation and idempotent late-event handling.</p>
+        <div class="links"><a href="https://github.com/edithnjoroge44-pro/realtime-data-pipeline">View repo →</a></div>
       </div>
-      <div class="card" style="border-top:4px solid #f59e0b">
-        <div class="num">CLI Application</div>
-        <h3>cli-data-tool</h3>
-        <p>argparse CLI to summarize, validate and query delimited files — clean CLI/domain separation, exit codes, 6 tests.</p>
-        <div class="links"><a href="https://github.com/edithnjoroge44-pro/cli-data-tool">View repo →</a></div>
+      <div class="card">
+        <div class="num">Data Quality</div>
+        <h3>data-quality-monitor</h3>
+        <p>Automated quality gates with statistical anomaly detection and a scored pass/fail report.</p>
+        <div class="links"><a href="https://github.com/edithnjoroge44-pro/data-quality-monitor">View repo →</a></div>
       </div>
+      <div class="card">
+        <div class="num">MLOps</div>
+        <h3>mlops-pipeline</h3>
+        <p>Versioned model registry, quality-gated promotion, and GitHub Actions CI/CD.</p>
+        <div class="links"><a href="https://github.com/edithnjoroge44-pro/mlops-pipeline">View repo →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff">
+  <div class="wrap">
+    <h2 style="color:#0d9488">Writing &amp; Evaluation</h2>
+    <p class="lead">Original technical writing — how I build and test systems, and how to make "good" measurable for AI. <a href="blog/index.html" style="color:#0d9488;font-weight:700">Read the articles →</a></p>
+    <div class="cards">
+      <div class="card"><div class="num">Systems · concurrency</div><h3>A thread-safe rate limiter</h3><p>Designing a sliding-window limiter that holds up under real traffic.</p><div class="links"><a href="blog/thread-safe-rate-limiter.html">Read →</a></div></div>
+      <div class="card"><div class="num">AI evaluation</div><h3>A rubric for rating AI outputs</h3><p>Criteria, anchored levels, and weighted scoring that graders actually agree on.</p><div class="links"><a href="blog/rubric-for-rating-ai-outputs.html">Read →</a></div></div>
+      <div class="card"><div class="num">Backend · APIs</div><h3>Designing a production REST API</h3><p>Validation, structured errors, layering, and tests for the unhappy paths.</p><div class="links"><a href="blog/production-rest-api.html">Read →</a></div></div>
+      <div class="card"><div class="num">Retrieval &amp; LLMs</div><h3>Evaluating a RAG system</h3><p>Recall@k, Hit-Rate@k, and MRR — measuring whether retrieval actually works.</p><div class="links"><a href="blog/evaluating-rag-systems.html">Read →</a></div></div>
     </div>
   </div>
 </section>
@@ -229,39 +312,6 @@
 
 <section style="background:#fff">
   <div class="wrap">
-    <h2>Advanced Projects</h2>
-    <p class="lead">Harder, production-grade builds — RAG &amp; evaluation, real-time streaming, automated data quality, and MLOps/CI-CD. <a href="advanced.html" style="color:#7c3aed;font-weight:700">Explore the showcase →</a></p>
-    <div class="cards">
-      <div class="card">
-        <div class="num">AI / Retrieval</div>
-        <h3>rag-llm-eval</h3>
-        <p>RAG pipeline built from scratch with an evaluation harness (Recall@k, Hit-Rate@k, MRR).</p>
-        <div class="links"><a href="https://github.com/edithnjoroge44-pro/rag-llm-eval">View repo →</a></div>
-      </div>
-      <div class="card">
-        <div class="num">Streaming</div>
-        <h3>realtime-data-pipeline</h3>
-        <p>Event-driven streaming with sliding-window aggregation and idempotent late-event handling.</p>
-        <div class="links"><a href="https://github.com/edithnjoroge44-pro/realtime-data-pipeline">View repo →</a></div>
-      </div>
-      <div class="card">
-        <div class="num">Data Quality</div>
-        <h3>data-quality-monitor</h3>
-        <p>Automated quality gates with statistical anomaly detection and a scored pass/fail report.</p>
-        <div class="links"><a href="https://github.com/edithnjoroge44-pro/data-quality-monitor">View repo →</a></div>
-      </div>
-      <div class="card">
-        <div class="num">MLOps</div>
-        <h3>mlops-pipeline</h3>
-        <p>Versioned model registry, quality-gated promotion, and GitHub Actions CI/CD.</p>
-        <div class="links"><a href="https://github.com/edithnjoroge44-pro/mlops-pipeline">View repo →</a></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section style="background:#fff">
-  <div class="wrap">
     <h2>Interactive Learning Labs</h2>
     <p class="lead">Hands-on, browser-based teaching demos I built to explain core data concepts — try them yourself.</p>
     <div class="cards">
@@ -284,12 +334,28 @@
   </div>
 </section>
 
+<section>
+  <div class="wrap">
+    <div class="cta">
+      <h2>Work with me</h2>
+      <p>I'm available for software engineering, backend/data-platform, ML/data-science, AI-evaluation, and BI work — remote, worldwide. Open to full-time, contract, and expert/evaluator engagements.</p>
+      <div class="buttons">
+        <a class="btn" href="mailto:edith.njoroge44@gmail.com">Email me</a>
+        <a class="ghost" href="https://github.com/edithnjoroge44-pro">GitHub repos</a>
+        <a class="ghost" href="https://www.linkedin.com/in/edith-njoroge-71ab65433">LinkedIn</a>
+      </div>
+      <p class="scope" style="color:#cfe3f2">Nairobi, Kenya · remote worldwide · response within 24h</p>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     Edith Njoroge — Software Engineer &amp; AI Domain Expert · Backend · Data &amp; ML Platforms · Nairobi, Kenya (remote, worldwide)
     <br><a href="mailto:edith.njoroge44@gmail.com">edith.njoroge44@gmail.com</a> · 
     <a href="https://github.com/edithnjoroge44-pro">github</a> · 
-    <a href="https://www.linkedin.com/in/edith-njoroge-71ab65433">linkedin</a>
+    <a href="https://www.linkedin.com/in/edith-njoroge-71ab65433">linkedin</a> · 
+    <a href="blog/index.html">writing</a>
   </div>
 </footer>
 

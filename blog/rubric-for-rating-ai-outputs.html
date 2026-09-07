@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A practical rubric for rating AI outputs (and why it decides who gets hired)</title>
+<style>:root{--navy:#1e3a8a;--indigo:#4f46e5;--teal:#0d9488;--ink:#111827;--muted:#5b6472;--bg:#f5f7fb;--line:#e4e9f2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--indigo);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+article{padding:48px 0}
+.crumb{font-size:.85rem;color:var(--muted);margin-bottom:14px}
+h1{font-size:1.9rem;color:var(--navy);line-height:1.25;margin-bottom:10px}
+.meta{font-size:.85rem;color:var(--muted);margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+h2{font-size:1.25rem;color:var(--navy);margin:30px 0 8px}
+h3{font-size:1.05rem;color:var(--navy);margin:22px 0 6px}
+p{margin-bottom:14px;color:#1f2937}
+pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:8px;overflow:auto;font-size:.85rem;line-height:1.5;margin:14px 0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+li{margin:4px 0 4px 20px}
+.note{background:#eef6f5;border-left:4px solid var(--teal);padding:12px 16px;border-radius:0 8px 8px 0;font-size:.9rem;margin:18px 0}
+ul{list-style:disc}
+.back{display:inline-block;background:var(--navy);color:#fff;padding:8px 16px;border-radius:8px;font-size:.88rem}
+.back:hover{text-decoration:none;background:var(--indigo)}</style>
+<meta name="description" content="Anyone can say an answer is 'good'. The people hired to evaluate AI know exactly what 'good' means. Here is the rubric framework I built.">
+</head>
+<body>
+<div class="wrap">
+<article>
+<div class="crumb"><a href="index.html">&#8592; Writing &amp; Evaluation</a></div>
+<h1>A practical rubric for rating AI outputs (and why it decides who gets hired)</h1>
+<div class="meta">By Edith Njoroge &#183; Software Engineer &amp; AI Domain Expert &#183; 7 min read &#183; <a href='https://github.com/edithnjoroge44-pro/ai-eval-rubrics'>ai-eval-rubrics repo</a></div><p>There is a quiet difference between &ldquo;I can tell when an answer is good&rdquo; and &ldquo;I can specify, to a colleague, precisely what makes it good.&rdquo; Companies hiring people to evaluate AI &mdash; to grade generated code, rate model answers, or build error taxonomies &mdash; are paying for the second one. That is a skill you can demonstrate, and the artifact is a <strong>rubric</strong>.</p>
+<h2>The anatomy of a rubric</h2>
+<p>A useful rubric is not a single 1&ndash;5 scale. It has three parts:</p>
+<ul><li><strong>Criteria</strong> &mdash; the dimensions that matter, stated independently (e.g. accuracy, completeness, clarity, citation support).</li>
+<li><strong>Levels</strong> &mdash; a small, defensible set of distinct quality bands, each described in observable terms that do not rely on taste.</li>
+<li><strong>Anchor examples</strong> &mdash; one real sample per level so a grader can calibrate against concrete cases rather than vibes.</li></ul>
+<h2>Descriptors beat adjectives</h2>
+<p>The classic failure is a level description like &ldquo;good answer.&rdquo; Two graders will disagree. An anchored level is something like: <em>&ldquo;Makes the correct factual claim, supports it with a source, and flags any uncertainty about the source&rsquo;s authority.&rdquo;</em> That is a checkable condition, and the difference shows up immediately in inter-annotator agreement.</p>
+<h2>Weighted scoring, not just a single score</h2>
+<p>Not every criterion deserves equal weight. I make criteria weights explicit and compute a weighted total, then report per-criterion scores so a 3/5 and a 4/4 are distinguishable rather than collapsed into &ldquo;good.&rdquo; My harness also runs the rubric as code &mdash; so the rubric is not just a document, it is a repeatable rule you can apply to a batch and get consistent, auditable numbers.</p>
+<div class="note"><strong>Why this matters professionally:</strong> building an evaluation rubric and a graded, citation-backed sample is exactly the kind of work evaluation platforms hire for. It is also a transferable skill: the same rubric thinking applies to code reviews, acceptance criteria, and quality gates.</div>
+<p>My open-source <a href="https://github.com/edithnjoroge44-pro/ai-eval-rubrics">ai-eval-rubrics</a> repository contains a full rubric library, a runnable scoring harness, and a citation-supported graded sample &mdash; and it is honest about what it demonstrates rather than claiming client work.</p><p style="margin-top:34px"><a class="back" href="index.html">&#8592; Back to writing</a></p>
+</article>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to actually evaluate a RAG system (Recall@k, Hit-Rate@k, MRR)</title>
+<style>:root{--navy:#1e3a8a;--indigo:#4f46e5;--teal:#0d9488;--ink:#111827;--muted:#5b6472;--bg:#f5f7fb;--line:#e4e9f2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--indigo);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+article{padding:48px 0}
+.crumb{font-size:.85rem;color:var(--muted);margin-bottom:14px}
+h1{font-size:1.9rem;color:var(--navy);line-height:1.25;margin-bottom:10px}
+.meta{font-size:.85rem;color:var(--muted);margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+h2{font-size:1.25rem;color:var(--navy);margin:30px 0 8px}
+h3{font-size:1.05rem;color:var(--navy);margin:22px 0 6px}
+p{margin-bottom:14px;color:#1f2937}
+pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:8px;overflow:auto;font-size:.85rem;line-height:1.5;margin:14px 0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+li{margin:4px 0 4px 20px}
+.note{background:#eef6f5;border-left:4px solid var(--teal);padding:12px 16px;border-radius:0 8px 8px 0;font-size:.9rem;margin:18px 0}
+ul{list-style:disc}
+.back{display:inline-block;background:var(--navy);color:#fff;padding:8px 16px;border-radius:8px;font-size:.88rem}
+.back:hover{text-decoration:none;background:var(--indigo)}</style>
+<meta name="description" content="A RAG pipeline can feel impressive and still be useless. Numbers, not demos, tell you if retrieval is working. Here are the metrics.">
+</head>
+<body>
+<div class="wrap">
+<article>
+<div class="crumb"><a href="index.html">&#8592; Writing &amp; Evaluation</a></div>
+<h1>How to actually evaluate a RAG system (Recall@k, Hit-Rate@k, MRR)</h1>
+<div class="meta">By Edith Njoroge &#183; Software Engineer &amp; AI Domain Expert &#183; 7 min read &#183; <a href='https://github.com/edithnjoroge44-pro/rag-llm-eval'>rag-llm-eval repo</a></div><p>Retrieval-augmented generation feels great in a demo: you ask a question, it streams a sourced answer. But how do you know retrieval is actually pulling the right documents, and not just producing a well-written answer to a question it got the evidence for by luck? You measure it. The three metrics that matter most are retrieval-focused, because generation quality is capped by retrieval quality.</p>
+<h2>Recall@k &mdash; did we fetch any of the right documents?</h2>
+<p>For each question there are ground-truth documents. <strong>Recall@k</strong> asks: of those correct documents, how many landed in the top <em>k</em> retrieved? High recall means the evidence is in front of the model.</p>
+<h2>Hit-Rate@k &mdash; did the right thing appear at all?</h2>
+<p><strong>Hit-rate@k</strong> is the binary cousin: for each query, did the top <em>k</em> contain <em>at least one</em> relevant document? (1 if yes, 0 if no, averaged across the set.) It is coarse but instantly readable &mdash; &ldquo;85% of queries got relevant evidence in the top 5.&rdquo;</p>
+<h2>MRR &mdash; how high did the right answer rank?</h2>
+<p><strong>Mean Reciprocal Rank</strong> is sensitive to <em>position</em>: a relevant document at rank 1 scores 1.0, at rank 2 scores 0.5, at rank 3 scores 0.33, and so on. MRR rewards pipelines that put the best evidence at the top, which is what a high-quality answer depends on. If your MRR is low but recall is high, the evidence is there but your ranking is bad &mdash; a different failure than &ldquo;we&rsquo;re not retrieving it at all.&rdquo;</p>
+<h2>Why the harness is the hard part</h2>
+<p>The metrics are easy. The hard part is reproducibility: a fixed evaluation set, deterministic chunking and embedding, and an automated script that recomputes scores so you can compare changes. My <a href="https://github.com/edithnjoroge44-pro/rag-llm-eval">rag-llm-eval</a> repo builds the chain from scratch (chunking, embedding, retrieval) with a harness that computes Recall@k, Hit-Rate@k, and MRR on a small ground-truth set &mdash; in pure local Python, no API keys, so it is verifiable end to end.</p>
+<div class="note"><strong>The takeaway:</strong> domains matter. Evaluators and engineers get paid to make &ldquo;good&rdquo; measurable. If you can turn a vague &ldquo;seems right&rdquo; into <em>Recall@5 = 0.82, MRR = 0.61</em>, you have the skill that both AI-evaluation platforms and engineering teams actually hire for.</div><p style="margin-top:34px"><a class="back" href="index.html">&#8592; Back to writing</a></p>
+</article>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designing a production REST API: validation, errors, and tests</title>
+<style>:root{--navy:#1e3a8a;--indigo:#4f46e5;--teal:#0d9488;--ink:#111827;--muted:#5b6472;--bg:#f5f7fb;--line:#e4e9f2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--indigo);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+article{padding:48px 0}
+.crumb{font-size:.85rem;color:var(--muted);margin-bottom:14px}
+h1{font-size:1.9rem;color:var(--navy);line-height:1.25;margin-bottom:10px}
+.meta{font-size:.85rem;color:var(--muted);margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+h2{font-size:1.25rem;color:var(--navy);margin:30px 0 8px}
+h3{font-size:1.05rem;color:var(--navy);margin:22px 0 6px}
+p{margin-bottom:14px;color:#1f2937}
+pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:8px;overflow:auto;font-size:.85rem;line-height:1.5;margin:14px 0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+li{margin:4px 0 4px 20px}
+.note{background:#eef6f5;border-left:4px solid var(--teal);padding:12px 16px;border-radius:0 8px 8px 0;font-size:.9rem;margin:18px 0}
+ul{list-style:disc}
+.back{display:inline-block;background:var(--navy);color:#fff;padding:8px 16px;border-radius:8px;font-size:.88rem}
+.back:hover{text-decoration:none;background:var(--indigo)}</style>
+<meta name="description" content="The gap between a tutorial API and a service you would ship is mostly boring, correct decisions. Here is the checklist I applied.">
+</head>
+<body>
+<div class="wrap">
+<article>
+<div class="crumb"><a href="index.html">&#8592; Writing &amp; Evaluation</a></div>
+<h1>Designing a production REST API: validation, errors, and tests</h1>
+<div class="meta">By Edith Njoroge &#183; Software Engineer &amp; AI Domain Expert &#183; 8 min read &#183; <a href='https://github.com/edithnjoroge44-pro/sw-rest-api'>sw-rest-api repo</a></div><p>A tutorial CRUD app returns 200 for everything. A service you would actually ship returns the <em>right</em> thing for every input, including the bad ones. Most of that is unglamorous but decisive: validate early, make errors structured, and prove the behaviour with tests.</p>
+<h2>Validate at the boundary</h2>
+<p>The first place bad data can be rejected is the HTTP boundary. I validate required fields, types, and formats before they ever reach the database layer. A malformed payload should never trigger a 500; it should be a 400 with a message that tells the client exactly what to fix.</p>
+<h2>Structured errors, not string soup</h2>
+<p>Clients cannot parse &ldquo;Something went wrong.&rdquo; I return a consistent JSON error envelope &mdash; a machine-readable code, a human message, and per-field detail where relevant &mdash; so a front end or another service can react programmatically. Correct status codes matter too: 400 for bad input, 404 for missing, 409 for conflict, 422 for validation.</p>
+<h2>The layering that keeps it maintainable</h2>
+<pre><code>route  (parse + validate request)
+  &#9500;&#9472; service   (business rules, orchestration)
+       &#9492;&#9472; repository (only place that touches SQLite)</code></pre>
+<p>Separating the route layer from the database layer means you can test business logic in isolation and swap the storage engine without rewriting handlers. It is the difference between an app and a codebase.</p>
+<h2>Tests are the deliverable, not a nicety</h2>
+<p>I wrote tests first for the failure cases &mdash; blank body returns 400, missing resource returns 404, delete returns 204 &mdash; and watched them pass against a real (temporary) SQLite DB. Containers are part of the package too: a Dockerfile plus a CI workflow that runs the suite on every push, so &ldquo;does it still pass?&rdquo; is a question the pipeline answers, not a question I have to answer manually.</p>
+<div class="note"><strong>Why this matters:</strong> these are the exact judgment calls a senior engineer makes. Open the repo, run <code>pytest</code>, and every path &mdash; happy and unhappy &mdash; is covered. That is the point of proof-of-work: show the decisions, not just the result.</div><p style="margin-top:34px"><a class="back" href="index.html">&#8592; Back to writing</a></p>
+</article>
+</div>
+</body>
+</html>

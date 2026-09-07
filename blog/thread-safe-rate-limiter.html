@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I built a thread-safe sliding-window rate limiter</title>
+<style>:root{--navy:#1e3a8a;--indigo:#4f46e5;--teal:#0d9488;--ink:#111827;--muted:#5b6472;--bg:#f5f7fb;--line:#e4e9f2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--indigo);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+article{padding:48px 0}
+.crumb{font-size:.85rem;color:var(--muted);margin-bottom:14px}
+h1{font-size:1.9rem;color:var(--navy);line-height:1.25;margin-bottom:10px}
+.meta{font-size:.85rem;color:var(--muted);margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+h2{font-size:1.25rem;color:var(--navy);margin:30px 0 8px}
+h3{font-size:1.05rem;color:var(--navy);margin:22px 0 6px}
+p{margin-bottom:14px;color:#1f2937}
+pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:8px;overflow:auto;font-size:.85rem;line-height:1.5;margin:14px 0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+li{margin:4px 0 4px 20px}
+.note{background:#eef6f5;border-left:4px solid var(--teal);padding:12px 16px;border-radius:0 8px 8px 0;font-size:.9rem;margin:18px 0}
+ul{list-style:disc}
+.back{display:inline-block;background:var(--navy);color:#fff;padding:8px 16px;border-radius:8px;font-size:.88rem}
+.back:hover{text-decoration:none;background:var(--indigo)}</style>
+<meta name="description" content="Recording limits per user per window is easy. Making it correct under concurrency is not. Here is the design I shipped.">
+</head>
+<body>
+<div class="wrap">
+<article>
+<div class="crumb"><a href="index.html">&#8592; Writing &amp; Evaluation</a></div>
+<h1>How I built a thread-safe sliding-window rate limiter</h1>
+<div class="meta">By Edith Njoroge &#183; Software Engineer &amp; AI Domain Expert &#183; 6 min read &#183; <a href='https://github.com/edithnjoroge44-pro/rate-limiter-cache'>rate-limiter-cache repo</a></div><p>Rate limiting is one of those problems that looks trivial until you run it under real traffic. A dict that tracks &ldquo;how many requests did this caller use in the last minute&rdquo; is a one-liner. The difficulty is entirely in the <em>details</em>: clock handling, memory hygiene, and correctness when multiple threads hit it at the same moment.</p>
+<h2>The reference design: sliding window, not fixed window</h2>
+<p>A <strong>fixed window</strong> (reset a counter every minute) lets a caller burst &mdash; 100 requests at 11:59 and 100 at 12:00 both sail through. A <strong>sliding window</strong> records timestamps so the window moves with the current time, which is what you actually want. I keep a deque of request timestamps per key and evict anything older than the window. The &ldquo;allowed now&rdquo; check is just a length comparison.</p>
+<pre><code>def allow(self, key: str) -&gt; bool:
+    now = time.monotonic()
+    with self._lock:
+        q = self._events.setdefault(key, deque())
+        while q and now - q[0] &gt; self._window:
+            q.popleft()
+        if len(q) &gt;= self._limit:
+            return False
+        q.append(now)
+        return True</code></pre>
+<h2>The part people get wrong: the lock</h2>
+<p>That <code>with self._lock</code> is not optional. Two threads reading and mutating the same deque &mdash; and the same <code>setdefault</code> &mdash; without a lock will corrupt state or double-count. The measure of a correct limiter is not the happy path; it is passing a concurrency smoke test. I stress-tested with a pool of threads all calling <code>allow()</code> on a shared key at once, then asserted that the number of grants never exceeded the limit and no keys were lost.</p>
+<h2>Memory hygiene</h2>
+<p>If you never evict keys, every caller you&rsquo;ve ever seen lives in memory forever &mdash; a slow leak. I pair the limiter with an LRU cache with O(1) eviction so stale keys are dropped. Knowing when to forget is as important as knowing when to count.</p>
+<div class="note"><strong>Why this matters:</strong> the same discipline &mdash; think about concurrency, edge cases, and resource limits up front, then prove the behaviour with tests &mdash; is what separates a working demo from a service you&rsquo;d ship. Open the repo and run <code>pytest</code>: six tests, including a concurrency smoke test, all passing.</div>
+<p>The lesson worth keeping: <em>write the test for the failure mode you&rsquo;re most afraid of, not the one that&rsquo;s easiest to write.</em></p><p style="margin-top:34px"><a class="back" href="index.html">&#8592; Back to writing</a></p>
+</article>
+</div>
+</body>
+</html>
