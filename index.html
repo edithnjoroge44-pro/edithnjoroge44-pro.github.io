@@ -6,8 +6,8 @@
 <title>Edith Njoroge — Software Engineer & AI Domain Expert · Backend, Data & ML Platforms</title>
 <style>
   :root{
-    --navy:#143d5c; --navy2:#1c5a80; --accent:#1fa06b; --ink:#1a1a1a;
-    --muted:#5c6b78; --bg:#f4f7fa; --card:#ffffff; --line:#e2e9f0;
+    --navy:#1e3a8a; --navy2:#4f46e5; --accent:#0d9488; --ink:#111827;
+    --muted:#5b6472; --bg:#f5f7fb; --card:#ffffff; --line:#e4e9f2;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -15,7 +15,7 @@
   a{color:var(--navy2);text-decoration:none}
   a:hover{text-decoration:underline}
   .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
-  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:56px 0 48px}
+  header{background:linear-gradient(135deg,#1e3a8a 0%,#4f46e5 55%,#0d9488 100%);color:#fff;padding:60px 0 52px}
   header h1{font-size:2.2rem;letter-spacing:.5px;margin-bottom:4px}
   header .tag{font-size:1.05rem;color:#cfe3f2;margin-bottom:14px}
   header .belt{display:flex;flex-wrap:wrap;gap:12px 22px;font-size:.92rem;color:#e6f0f8}
@@ -125,12 +125,6 @@
         <span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Tableau</span>
         <span class="chip">Looker</span><span class="chip">KPI design</span>
       </div>
-      <div class="track">
-        <h3>Data Science &amp; Analytics</h3>
-        <p>Predictive modeling, statistics, and experimentation that drive business decisions.</p>
-        <span class="chip">pandas</span><span class="chip">scikit-learn</span><span class="chip">Stats</span>
-        <span class="chip">A/B testing</span><span class="chip">Forecasting</span>
-      </div>
     </div>
   </div>
 </section>
@@ -171,6 +165,33 @@
         <div class="links">
           <a href="https://github.com/edithnjoroge44-pro/ai-eval-rubrics">View repo →</a>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 style="color:#4f46e5">Software Engineering Showcase</h2>
+    <p class="lead">Hands-on application development — a production REST service, a concurrency-safe rate limiter &amp; cache, and a real CLI tool. Each is tested and CI-gated.</p>
+    <div class="cards">
+      <div class="card" style="border-top:4px solid #4f46e5">
+        <div class="num">REST API Service</div>
+        <h3>sw-rest-api</h3>
+        <p>Flask + SQLite REST service with validation, structured error handling, Docker, and GitHub Actions CI. 6 tests.</p>
+        <div class="links"><a href="https://github.com/edithnjoroge44-pro/sw-rest-api">View repo →</a></div>
+      </div>
+      <div class="card" style="border-top:4px solid #0d9488">
+        <div class="num">Concurrency &amp; Systems</div>
+        <h3>rate-limiter-cache</h3>
+        <p>Thread-safe sliding-window rate limiter + O(1) LRU cache with correct eviction. 6 tests incl. concurrency.</p>
+        <div class="links"><a href="https://github.com/edithnjoroge44-pro/rate-limiter-cache">View repo →</a></div>
+      </div>
+      <div class="card" style="border-top:4px solid #f59e0b">
+        <div class="num">CLI Application</div>
+        <h3>cli-data-tool</h3>
+        <p>argparse CLI to summarize, validate and query delimited files — clean CLI/domain separation, exit codes, 6 tests.</p>
+        <div class="links"><a href="https://github.com/edithnjoroge44-pro/cli-data-tool">View repo →</a></div>
       </div>
     </div>
   </div>
